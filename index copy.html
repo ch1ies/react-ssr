@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高阶函数</title>
+</head>
+
+<body>
+    <script>
+        let result121 = {}
+        function highOrder(handle) {
+            return function (...args) {
+                var props = handle(...args)
+                return props
+            }
+        }
+
+        function handle(num1, num2) {
+            console.log("execute here ")
+            var num = num1 + num2
+            console.log(num)
+            return num
+        }
+
+        var result = highOrder(handle)
+        console.log(result)
+        var finall = result(1, 2)
+        console.log(finall)
+
+        // filter 数组的源码解析
+        Array.prototype.Myfilter = function (handle) {
+            console.log(this)
+            var newArr = []
+            for (var i = 0; i < this.length; i++) {
+                var result = handle(this[i], i, this)
+                if (result) {
+                    newArr.push(this[i])
+                }
+            }
+            return newArr
+        }
+        var arr = [1, 2, 34, 5, 5]
+        // var arr123 = arr.Myfilter((ele, index,self) => {
+        //     console.log('只是ele:'+ele, '这是下标索引:'+index)
+        //     return ele > 3
+        // })
+
+        // map的源码解析 ,注意使用箭头函数时 this 的指向问题
+        Array.prototype.Mymap1 = (func) => {
+            console.log(this === window) // true
+        }
+        // arr.Mymap()
+
+        Array.prototype.Mymap = function (func) {
+            var newArr = []
+            for (var i = 0; i < this.length; i++) {
+                var result = func(this[i], i, this)
+                newArr.push(result)
+            }
+            return newArr
+        }
+
+        // let array = arr.Mymap((ele, index, self) => {
+        //     // console.log(this === window) // true
+        //    return ele*12+131
+        // }) 
+
+        // reducer
+        Array.prototype.myRedecer = function (func, initialVal) {
+            initialVal = initialVal || 0
+            // var result = 0
+            for (var i = 0; i < this.length; i++) {
+                initialVal = func(initialVal, this[i], i, this)
+                // result = initialVal
+            }
+            return initialVal
+        }
+        // var num = arr.myRedecer(reducer,4)
+        // function reducer(accumulator, currentVal, index, array) {
+        //     console.log('accumulator:' + accumulator)
+        //     console.log('currentVal' + currentVal)
+        //     console.log('当前数组：'+ array)
+        //     console.log(this, 'this========')
+        //     return accumulator + currentVal
+        // } 
+        //     console.log(num)
+
+        // 函数中的this指向
+        // 关键在于函数是如何被调用的
+        var obj = { ordinary }
+        function ordinary() {
+            console.log(this, 'this========')
+            var that = this
+            that.age = 1
+            setTimeout(function () {
+                console.log(that, '函数中的that')
+                console.log(this, '函数中的this')
+                age++
+                console.log(that.age)
+            }, 1000)
+            console.log(age)
+        }
+        // obj.ordinary()
+
+        function test() {
+            console.log(this)
+            function test1() {
+                console.log(this)
+            }
+        }
+
+        // 使用reducer 实现map 
+        if (!Array.prototype.mapUsingReduce) {
+            Array.prototype.mapUsingReduce = function (callback, thisArg) {
+                return this.reduce(function (mappedArray, currentValue, index, array) {
+                    console.log(thisArg, 'thisArg======')
+                    mappedArray[index] = callback.call(thisArg, currentValue, index, array)
+                    return mappedArray
+                }, [])
+            }
+        }
+
+        var resu = [1, 2, , 3].mapUsingReduce(
+            (currentValue, index, array) => currentValue + index + array.length
+        ) // [5, 7, , 10]
+        console.log(resu, ' e=========')
+    </script>
+</body>
+
+</html>

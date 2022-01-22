@@ -1,0 +1,17 @@
+.header {
+    height: 40px;
+    line-height: 40px;
+    background: #abcdef;
+    color: #fff;
+    display: flex;
+}
+
+.header a {
+    color: inherit;
+    text-decoration: none;
+    margin-left: 50px;
+}
+.header a:hover {
+    color: #abcdef;
+    background: #fff;
+}

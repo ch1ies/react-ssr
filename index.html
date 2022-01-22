@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [{name: 'qqw', id: 123, sex:'0'},{name: 'qqw', id: 123, sex:'0'},{name: 'qqw', id: 123, sex:'0'},{name: 'qqw', id: 123, sex:'0'},{name: 'qqw', id: 123, sex:'0'}]
+        let Arr = arr.map(ele => {
+            let newA = {}
+            newA.name = ele.name
+            newA.id = ele.id
+            return newA
+        })
+        console.log(Arr)
+    </script>
+</body>
+</html>
